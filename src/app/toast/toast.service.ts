@@ -14,6 +14,8 @@ export class ToastService {
   @params: type: success, info, warning danger
   */
   showToast(type: string, timeout: number, message: string) {
-    this.toastChanged.next({ type: type, timeout: timeout, message: message });
+    this.toastChanged.next({ type: type, 
+      timeout: timeout, 
+      message: message });
   }
 }

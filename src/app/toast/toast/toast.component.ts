@@ -19,7 +19,6 @@ export class ToastComponent implements OnInit {
     });
   }
 
-  onClosed(e) {
-  }
+ 
 
 }

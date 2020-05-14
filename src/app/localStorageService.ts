@@ -1,11 +1,5 @@
-
-
 export class LocalStorageService<T> {
-
-  constructor(private key: string) {
-
-  }
-
+  constructor(private key: string) {}
   saveItemsToLocalStorage(items: Array<T> | T) {
     const savedItems = localStorage.setItem(this.key, JSON.stringify(items));
     return savedItems;

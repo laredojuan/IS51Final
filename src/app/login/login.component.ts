@@ -2,18 +2,65 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastService } from '../toast/toast.service';
 import { Subject } from 'rxjs';
+import { LocalStorageService } from '../localStorageService'
+
+export interface Iuser {
+  id?: number;
+  username: string;
+  password: string;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
-
-  constructor(private router: Router, private toastService: ToastService) {
+  isError: boolean = false;
+  error: string = '';
+  user: Iuser = { username: '', password: '' };
+  localStorageService: LocalStorageService<Iuser>;
+  currentUser: Iuser = null;
+  constructor(private router: Router) {
+    this.localStorageService = new LocalStorageService('user');
+}
+  ngOnInit(): void {
+    this.currentUser = this.localStorageService.getItemsFromLocalStorage(
+      'user'
+    ); console.log(this.currentUser);
+    if (this.currentUser !== null) {
+      this.router.navigate(['cart']);
+    }
   }
+    login(user: Iuser) 
+    {
+      console.log('from login user: ', this.user);
+      const defaultUser: Iuser = { username: 'Juan', password: 'Laredo123' };
+      if (user.username !== '' && user.password !== '') {
+        if (
+          user.username === defaultUser.username &&
+          user.password === defaultUser.password
+        ) {
+          this.isError = false;
+          this.localStorageService.saveItemsToLocalStorage(user);
+          // navigate to cart page
+          this.router.navigate(['home']);
+        } else {
+          // show error toast user
+          this.isError = true;
+          this.error = 'Username or Password is incorrect';
+        }
+      } else {
+        this.isError = true;
+        this.error = 'Please enter valid username or password';
+      }
+    }
 
-  ngOnInit() {
 
-  }
+    
+
+    
+
 
 }
